@@ -10,7 +10,9 @@ Imports System.Threading
 Public Class getQualinet
     Inherits MySql_Repository
 
-    Private sqlQuery As New Query
+    Private Property sqlQuery As New Query
+    Public Property LogWriter As New LogWriter
+
 
     Sub AT5()
 
@@ -31,17 +33,17 @@ Public Class getQualinet
                         _SQL = "('" & ReadRows.Item("SIGLA") & "', " & _
                             "'" & ReadRows.Item("ID_REGIAO") & "', " & _
                             "'" & ReadRows.Item("STATUS") & "', " & _
-                            "'" & ReadRows.Item("DT_NOTA") & "', " & _
+                            "'" & Format(CDate(ReadRows.Item("DT_NOTA")), "yyyy-MM-dd") & "', " & _
                             ReadRows.Item("COD_OS") & ", " & _
                             ReadRows.Item("NUM_CONTRATO") & ", " & _
                             "'" & ReadRows.Item("NOME_TITULAR") & "', " & _
                             "'" & ReadRows.Item("FECHAMENTO") & "', " & _
                             "'" & ReadRows.Item("SEGMENTO") & "', " & _
                             "'" & ReadRows.Item("TIPO_ORD_SRV") & "', " & _
-                            "'" & ReadRows.Item("DT_INST_ASS") & "', " & _
-                            "'" & ReadRows.Item("DT_ATEND") & "', " & _
-                            "'" & ReadRows.Item("DT_CADASTRO") & "', " & _
-                            "'" & ReadRows.Item("DT_BAIXA") & "', " & _
+                            "'" & ReadRows.Item("DT_INST_ASS").ToString & "', " & _
+                            "'" & ReadRows.Item("DT_ATEND").ToString & "', " & _
+                            "'" & ReadRows.Item("DT_CADASTRO").ToString & "', " & _
+                            "'" & ReadRows.Item("DT_BAIXA").ToString & "', " & _
                             ReadRows.Item("COD_BAIXA") & ", " & _
                             "'" & ReadRows.Item("COD_CANCEL") & "', " & _
                             "'" & ReadRows.Item("ULT_REAGENDAMENTO_GERAL") & "', " & _
@@ -68,14 +70,14 @@ Public Class getQualinet
                             "'" & ReadRows.Item("NR_PROTOCOLO_BP") & "', " & _
                             "'" & ReadRows.Item("DDD_TELEFONE_VOIP") & "', " & _
                             "'" & ReadRows.Item("NUM_TELEFONE_VOIP") & "', " & _
-                            "'" & ReadRows.Item("DT_DESPACHO") & "', " & _
+                            "'" & ReadRows.Item("DT_DESPACHO").ToString & "', " & _
                             "'" & ReadRows.Item("DESP_PARCEIRA") & "', " & _
                             "'" & ReadRows.Item("DESP_EQUIPE") & "', " & _
                             "'" & ReadRows.Item("EXEC_PARCEIRA") & "', " & _
                             "'" & ReadRows.Item("EXEC_EQUIPE") & "', " & _
-                            "'" & ReadRows.Item("HR_INICIO_EXECUCAO") & "', " & _
-                            "'" & ReadRows.Item("HR_TERMINO_EXECUCAO") & "', " & _
-                            "'" & ReadRows.Item("DT_AGENDA") & "', " & _
+                            "'" & ReadRows.Item("HR_INICIO_EXECUCAO").ToString & "', " & _
+                            "'" & ReadRows.Item("HR_TERMINO_EXECUCAO").ToString & "', " & _
+                            "'" & ReadRows.Item("DT_AGENDA").ToString & "', " & _
                             "'" & ReadRows.Item("AGENDA_DESCR") & "', " & _
                             "'" & ReadRows.Item("CONVENIENCIA_AUTO") & "', " & _
                             "'" & ReadRows.Item("EMERGENCIA") & "', " & _
@@ -99,8 +101,8 @@ Public Class getQualinet
                             "'" & ReadRows.Item("USR_DESPACHO_PF") & "', " & _
                             "'" & ReadRows.Item("USR_BAIXA_PF") & "', " & _
                             "'" & ReadRows.Item("IE_DESCRICAO") & "', " & _
-                            "'" & ReadRows.Item("IE_DT_OCORRENCIA") & "', " & _
-                            "'" & ReadRows.Item("IE_DT_RESOLUCAO") & "', " & _
+                            "'" & ReadRows.Item("IE_DT_OCORRENCIA").ToString & "', " & _
+                            "'" & ReadRows.Item("IE_DT_RESOLUCAO").ToString & "', " & _
                             "'" & ReadRows.Item("IE_TP_RESOLUCAO") & "', " & _
                             "'" & ReadRows.Item("IE_USR_ATEND") & "', " & _
                             "'" & ReadRows.Item("IE_USR_RESOL") & "', " & _
@@ -114,8 +116,7 @@ Public Class getQualinet
                 End Using
             End Using
         Catch ex As Exception
-            Dim ERRO As String = ex.Message & " " & Err.Description
-            ERRO += "<-"
+            LogWriter.WhriteLog(Now, ex.Message, "AT5 UPDATE")
         End Try
 
 
